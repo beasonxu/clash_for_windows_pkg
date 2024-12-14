@@ -13,7 +13,7 @@ $client = new Client([
     ]
 ]);
 
-$latest = $client->get('repos/Fndroid/clash_for_windows_pkg/releases/latest');
+$latest = $client->get('repos/beasonxu/clash_for_windows_pkg/releases/latest');
 $latest = json_decode($latest->getBody()->getContents(), true);
 
 try {
