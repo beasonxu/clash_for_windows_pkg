@@ -5,12 +5,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
 $client = new Client([
-    'base_uri' => 'https://api.github.com',
-    'headers' => [
-        'Authorization' => 'Bearer '.getenv('GITHUB_TOKEN'),
-        'Accept' => 'application/vnd.github+json',
-        'X-GitHub-Api-Version' => '2022-11-28'
-    ]
+    'base_uri' => 'https://api.github.com'
 ]);
 
 $latest = $client->get('repos/beasonxu/clash_for_windows_pkg/releases/latest');
