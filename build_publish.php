@@ -19,7 +19,6 @@ $latest = json_decode($latest->getBody()->getContents(), true);
 try {
     $own_repo = $client->get('repos/beasonxu/clash_for_windows_pkg/releases/tags/'.$latest['tag_name']);
     $own_repo = json_decode($own_repo->getBody()->getContents(), true);
-    /Users/shuxinghu/Documents/GitHub/clash_for_windows_pkg/composer.json
     if($own_repo['tag_name'] === $latest['tag_name']) {
         echo $latest['tag_name'].' this version was packaged and published';exit;
     }
