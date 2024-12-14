@@ -5,14 +5,19 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
 $client = new Client([
-    'base_uri' => 'https://api.github.com'
+    'base_uri' => 'https://api.github.com',
+    'headers' => [
+        'Authorization' => 'Bearer '.getenv('GITHUB_TOKEN'),
+        'Accept' => 'application/vnd.github+json',
+        'X-GitHub-Api-Version' => '2022-11-28'
+    ]
 ]);
 
 $latest = $client->get('repos/beasonxu/clash_for_windows_pkg/releases/latest');
 $latest = json_decode($latest->getBody()->getContents(), true);
 
 try {
-    $own_repo = $client->get('repos/lantongxue/clash_for_windows_pkg/releases/tags/'.$latest['tag_name']);
+    $own_repo = $client->get('repos/beasonxu/clash_for_windows_pkg/releases/tags/'.$latest['tag_name']);
     $own_repo = json_decode($own_repo->getBody()->getContents(), true);
 
     if($own_repo['tag_name'] === $latest['tag_name']) {
@@ -23,7 +28,7 @@ try {
     echo $exception->getResponse()->getBody()->getContents();
 }
 
-$release = $client->post('repos/lantongxue/clash_for_windows_pkg/releases', [
+$release = $client->post('repos/beasonxu/clash_for_windows_pkg/releases', [
     'json' => [
         'tag_name' => $latest['tag_name'],
         'name' => $latest['name'],
@@ -50,7 +55,7 @@ foreach($latest['assets'] as $asset) {
     $deb_name = $base_name.'.deb';
     system('dpkg-deb -b clash_for_windows/'.' '.$deb_name);
 
-    $client->post('https://uploads.github.com/repos/lantongxue/clash_for_windows_pkg/releases/'.$release['id'].'/assets', [
+    $client->post('https://uploads.github.com/repos/beasonxu/clash_for_windows_pkg/releases/'.$release['id'].'/assets', [
         'headers' => [
             'Content-Type' => 'application/octet-stream',
         ],
